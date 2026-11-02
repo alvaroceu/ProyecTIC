@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProyecTIC - Columnas y zona de peligro</title>
+    <!--CSS:-->
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body class="bg-alt">
+
+    <!--Cabecera (logueado):-->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <img src="../logo.png" alt="ProyecTIC Logo" class="logo">
+            </a>
+            <nav class="main-nav">
+                <a href="tableros-publicos.html">Tableros públicos</a>
+                <a href="mis-tableros.html" class="active">Mis tableros</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="user-menu">
+                <a href="perfil.html" class="header-avatar" style="text-decoration: none;">U</a>
+                <button class="user-dropdown-btn" onclick="window.location.href='perfil.html'">Usuario <span class="arrow-down">▼</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!--Contenido principal:-->
+    <main class="columns-main">
+        
+        <!--Migas de pan:-->
+        <div class="breadcrumbs">
+            <a href="mis-tableros.html">Mis tableros</a> <span class="separator">›</span> 
+            <a href="tablero.html">Proyecto Alpha</a> <span class="separator">›</span> 
+            <a href="ajustes-tablero.html">Ajustes</a> <span class="separator">›</span> 
+            <span>Columnas</span>
+        </div>
+
+        <h1>Columnas y eliminar tablero</h1>
+
+        <!--Gestión de columnas:-->
+        <div class="form-card columns-card">
+            <h3 class="section-title-sm">Nombre de las columnas</h3>
+            
+            <form id="columns-form" action="tablero.html">
+                <div class="column-list">
+                    
+                    <div class="column-item">
+                        <span class="drag-handle" title="Arrastrar para reordenar">⋮⋮</span>
+                        <input type="text" value="Pendiente" required>
+                    </div>
+                    
+                    <div class="column-item">
+                        <span class="drag-handle" title="Arrastrar para reordenar">⋮⋮</span>
+                        <input type="text" value="En Proceso" required>
+                    </div>
+                    
+                    <div class="column-item">
+                        <span class="drag-handle" title="Arrastrar para reordenar">⋮⋮</span>
+                        <input type="text" value="Terminado" required>
+                    </div>
+                    
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+
+        <!--Zona de peligro:-->
+        <div class="danger-zone-card">
+            <div class="danger-zone-content">
+                <h3>Zona de peligro</h3>
+                <p>Una vez que elimines un tablero, no hay vuelta atrás. Todos los datos, tarjetas, comentarios y configuraciones se borrarán permanentemente. Por favor, asegúrate antes de continuar.</p>
+            </div>
+            <div class="danger-zone-action">
+                <button type="button" class="btn btn-danger-solid">Eliminar tablero</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!--Pie de página:-->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <span>&copy; 2026 ProyecTIC &middot; Sistemas Web I</span>
+        </div>
+        <div class="footer-right">
+            <a href="contacto.html">Contacto</a> &middot;
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+        </div>
+    </footer>
+
+    <!--JS:-->
+    <script src="../js/global.js"></script>
+</body>
+</html>

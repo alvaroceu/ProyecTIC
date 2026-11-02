@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProyecTIC - Proyecto Alpha (Solo lectura)</title>
+    <!--CSS:-->
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body class="bg-board">
+
+    <!--Cabecera:-->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <img src="../logo.png" alt="ProyecTIC Logo" class="logo">
+            </a>
+            <nav class="main-nav">
+                <a href="tableros-publicos.html" class="active">Tableros públicos</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <a href="registro.html" class="btn btn-outline">Iniciar sesión</a>
+            <a href="registro.html" class="btn btn-primary">Registrarse</a>
+        </div>
+    </header>
+
+    <!--Contenido principal:-->
+    <main class="board-view-main">
+        
+        <!--Cabecera del tablero:-->
+        <div class="board-view-header">
+            <div class="breadcrumbs">
+                <a href="tableros-publicos.html">Tableros públicos</a> <span class="separator">›</span> <span>Proyecto Alpha</span>
+            </div>
+            
+            <div class="board-title-group">
+                <h1>Proyecto Alpha</h1>
+                <span class="badge badge-public">Público · Solo lectura</span>
+            </div>
+        </div>
+
+        <!--Banner de invitados:-->
+        <div class="guest-banner">
+            <div class="guest-banner-text">
+                <span class="icon-info">ℹ️</span>
+                Inicia sesión para colaborar en tableros y crear los tuyos.
+            </div>
+            <a href="registro.html" class="btn btn-secondary btn-sm">Iniciar sesión</a>
+        </div>
+
+        <!--Kanban:-->
+        <div class="kanban-container">
+            
+            <!--Columna Pendiente:-->
+            <div class="kanban-column">
+                <div class="kanban-column-header">
+                    <h3 class="kanban-column-title">Pendiente</h3>
+                    <span class="kanban-column-count">3</span>
+                </div>
+                <div class="kanban-cards-list">
+                    <!--Tarjeta 1:-->
+                    <div class="kanban-card readonly">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title">Diseñar wireframes de la vista de tablero</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date">15 Oct</span>
+                                <span class="meta-item">💬 2 coment.</span>
+                            </div>
+                            <div class="kanban-card-avatar" title="Asignado a Ana">A</div>
+                        </div>
+                    </div>
+                    <!--Tarjeta 2:-->
+                    <div class="kanban-card readonly">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title">Definir paleta de colores final</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date">18 Oct</span>
+                            </div>
+                            <div class="kanban-card-avatar" style="background-color: var(--brand-orange);" title="Asignado a Carlos">C</div>
+                        </div>
+                    </div>
+                    <!--Tarjeta 3:-->
+                    <div class="kanban-card readonly">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title">Redactar textos para la landing page</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="meta-item">💬 1 coment.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Columna En proceso:-->
+            <div class="kanban-column">
+                <div class="kanban-column-header">
+                    <h3 class="kanban-column-title">En Proceso</h3>
+                    <span class="kanban-column-count">2</span>
+                </div>
+                <div class="kanban-cards-list">
+                    <div class="kanban-card readonly">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title">Maquetar vista de registro en HTML/CSS</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date badge-urgent">Hoy</span>
+                                <span class="meta-item">💬 4 coment.</span>
+                            </div>
+                            <div class="kanban-card-avatar" title="Asignado a Ana">A</div>
+                        </div>
+                    </div>
+                    <div class="kanban-card readonly">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title">Configurar servidor de desarrollo local</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date">16 Oct</span>
+                            </div>
+                            <div class="kanban-card-avatar" style="background-color: var(--brand-dark);" title="Asignado a Laura">L</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Columna Terminado:-->
+            <div class="kanban-column">
+                <div class="kanban-column-header">
+                    <h3 class="kanban-column-title">Terminado</h3>
+                    <span class="kanban-column-count">2</span>
+                </div>
+                <div class="kanban-cards-list">
+                    <div class="kanban-card readonly">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title" style="text-decoration: line-through; color: var(--text-light);">Reunión inicial de toma de requisitos</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date">10 Oct</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kanban-card readonly">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title" style="text-decoration: line-through; color: var(--text-light);">Crear repositorio en GitHub</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date">11 Oct</span>
+                            </div>
+                            <div class="kanban-card-avatar" style="background-color: var(--brand-dark);" title="Asignado a Laura">L</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!--Pie de página:-->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <span>&copy; 2026 ProyecTIC &middot; Sistemas Web I</span>
+        </div>
+        <div class="footer-right">
+            <a href="contacto.html">Contacto</a> &middot;
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+        </div>
+    </footer>
+
+    <!--JS:-->
+    <script src="../js/global.js"></script>
+</body>
+</html>

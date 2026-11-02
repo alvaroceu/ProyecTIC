@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProyecTIC - Ajustes del tablero</title>
+    <!--CSS:-->
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body class="bg-alt">
+
+    <!--Cabecera (logueado):-->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <img src="../logo.png" alt="ProyecTIC Logo" class="logo">
+            </a>
+            <nav class="main-nav">
+                <a href="tableros-publicos.html">Tableros públicos</a>
+                <a href="mis-tableros.html" class="active">Mis tableros</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="user-menu">
+                <a href="perfil.html" class="header-avatar" style="text-decoration: none;">U</a>
+                <button class="user-dropdown-btn" onclick="window.location.href='perfil.html'">Usuario <span class="arrow-down">▼</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!--Contenido principal:-->
+    <main class="settings-main">
+        
+        <!--Migas de pan:-->
+        <div class="breadcrumbs">
+            <a href="mis-tableros.html">Mis tableros</a> <span class="separator">›</span> <a href="tablero.html">Proyecto Alpha</a> <span class="separator">›</span> <span>Ajustes</span>
+        </div>
+
+        <h1>Ajustes del tablero</h1>
+
+        <!--General:-->
+        <div class="form-card" style="margin-bottom: 40px;">
+            <h3 class="section-title" style="margin-bottom: 25px; font-size: 1.4rem;">General</h3>
+            
+            <form id="board-settings-form" action="tablero.html">
+                <div class="form-row-custom">
+                    <div class="form-group">
+                        <label for="board-name">Nombre</label>
+                        <input type="text" id="board-name" value="Proyecto Alpha" placeholder="Nombre del tablero" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="board-visibility">Visibilidad</label>
+                        <select id="board-visibility" class="form-select">
+                            <option value="privado" selected>Privado</option>
+                            <option value="publico">Público</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="board-desc">Descripción</label>
+                    <input type="text" id="board-desc" value="Tablero general para el seguimiento del desarrollo..." placeholder="Descripción del tablero">
+                </div>
+                
+                <div class="form-actions-inline" style="justify-content: flex-end; margin-top: 25px;">
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+
+        <!--Tarjetas de gestión:-->
+        <div class="management-grid">
+            
+            <!--Tarjeta Miembros:-->
+            <div class="management-card">
+                <div class="management-card-content">
+                    <div class="feature-icon icon-roles" style="margin-bottom: 0; flex-shrink: 0;"></div>
+                    <div class="management-text">
+                        <h3>Miembros e invitaciones</h3>
+                        <p>Gestiona quién tiene acceso a este tablero, envía invitaciones y cambia los roles (Admin, Colaborador, Invitado).</p>
+                    </div>
+                </div>
+                <div class="management-card-footer">
+                    <a href="miembros.html" class="btn btn-outline">Gestionar &rarr;</a>
+                </div>
+            </div>
+
+            <!--Tarjeta Columnas:-->
+            <div class="management-card">
+                <div class="management-card-content">
+                    <div class="feature-icon icon-kanban" style="margin-bottom: 0; flex-shrink: 0;"></div>
+                    <div class="management-text">
+                        <h3>Columnas y eliminar tablero</h3>
+                        <p>Añade, edita o elimina las columnas de tu flujo de trabajo. También puedes eliminar el tablero permanentemente.</p>
+                    </div>
+                </div>
+                <div class="management-card-footer">
+                    <a href="columnas.html" class="btn btn-outline">Gestionar &rarr;</a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!--Pie de página:-->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <span>&copy; 2026 ProyecTIC &middot; Sistemas Web I</span>
+        </div>
+        <div class="footer-right">
+            <a href="contacto.html">Contacto</a> &middot;
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+        </div>
+    </footer>
+
+    <!--JS:-->
+    <script src="../js/global.js"></script>
+</body>
+</html>

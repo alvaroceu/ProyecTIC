@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProyecTIC - Mi perfil</title>
+    <!--CSS:-->
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body class="bg-alt">
+
+    <!--Cabecera (logueado):-->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <img src="../logo.png" alt="ProyecTIC Logo" class="logo">
+            </a>
+            <nav class="main-nav">
+                <a href="tableros-publicos.html">Tableros públicos</a>
+                <a href="mis-tableros.html">Mis tableros</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <!--Menú de usuario:-->
+            <div class="user-menu">
+                <div class="header-avatar">U</div>
+                <button class="user-dropdown-btn">Usuario <span class="arrow-down">▼</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!--Contenido principal:-->
+    <main class="profile-main">
+        
+        <div class="profile-header">
+            <h1>Mi perfil</h1>
+        </div>
+
+        <div class="profile-card">
+            <div class="profile-grid">
+                
+                <!--Foto de perfil:-->
+                <div class="profile-photo-col">
+                    <div class="profile-photo-placeholder">
+                        <span class="icon-camera">📷</span>
+                        <span class="photo-text">foto de perfil</span>
+                    </div>
+                    <button type="button" class="btn btn-outline btn-block">Cambiar foto</button>
+                </div>
+
+                <!--Datos del perfil:-->
+                <div class="profile-form-col">
+                    <form id="profile-form">
+                        
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" value="Usuario Ejemplo" placeholder="Tu nombre" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Correo electrónico (no editable)</label>
+                            <input type="email" id="email" value="correo@ejemplo.com" readonly>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="new-password">Nueva contraseña</label>
+                                <input type="password" id="new-password" placeholder="••••••••">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Repetir contraseña</label>
+                                <input type="password" id="confirm-password" placeholder="••••••••">
+                            </div>
+                        </div>
+
+                        <div class="profile-actions">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <!--Cerrar sesión:-->
+            <div class="profile-footer-actions">
+                <a href="index.html" class="btn btn-outline logout-btn">Cerrar sesión</a>
+            </div>
+        </div>
+
+    </main>
+
+    <!--Pie de página:-->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <span>&copy; 2026 ProyecTIC &middot; Sistemas Web I</span>
+        </div>
+        <div class="footer-right">
+            <a href="contacto.html">Contacto</a> &middot;
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+        </div>
+    </footer>
+
+    <!--JS:-->
+    <script src="../js/global.js"></script>
+</body>
+</html>

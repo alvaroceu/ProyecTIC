@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProyecTIC - Tableros públicos</title>
+    <!--CSS:-->
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body class="bg-alt">
+
+    <!--Cabecera:-->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <img src="../logo.png" alt="ProyecTIC Logo" class="logo">
+            </a>
+            <nav class="main-nav">
+                <a href="tableros-publicos.html" class="active">Tableros públicos</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <a href="registro.html" class="btn btn-outline">Iniciar sesión</a>
+            <a href="registro.html" class="btn btn-primary">Registrarse</a>
+        </div>
+    </header>
+
+    <!--Contenido principal:-->
+    <main class="boards-main">
+        
+        <!--Buscador:-->
+        <div class="boards-header">
+            <h1>Tableros públicos</h1>
+            <form class="search-form" id="search-boards-form">
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar tablero...">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+        </div>
+
+        <!--Cuadrícula de tableros:-->
+        <div class="boards-grid" id="public-boards-container">
+            
+            <div class="board-card">
+                <div class="board-cover" style="background: linear-gradient(135deg, #6EA1B0, #588795);"></div>
+                <div class="board-content">
+                    <h3>Proyecto Alpha</h3>
+                    <p>Tablero general para el seguimiento del desarrollo de la nueva aplicación móvil. Fase inicial.</p>
+                </div>
+                <div class="board-footer">
+                    <a href="tablero-publico-lectura.html" class="btn btn-outline btn-sm">Ver tablero</a>
+                    <span class="board-members">👥 4 miembros</span>
+                </div>
+            </div>
+
+            <div class="board-card">
+                <div class="board-cover" style="background: linear-gradient(135deg, #E6A34F, #D18D3C);"></div>
+                <div class="board-content">
+                    <h3>Rediseño Web</h3>
+                    <p>Tareas de diseño UI/UX para la web corporativa de 2026. Revisión de wireframes.</p>
+                </div>
+                <div class="board-footer">
+                    <a href="tablero-publico-lectura.html" class="btn btn-outline btn-sm">Ver tablero</a>
+                    <span class="board-members">👥 2 miembros</span>
+                </div>
+            </div>
+
+            <div class="board-card">
+                <div class="board-cover" style="background: linear-gradient(135deg, #373F47, #6B7280);"></div>
+                <div class="board-content">
+                    <h3>Campaña Marketing Q3</h3>
+                    <p>Planificación de contenidos para redes sociales y anuncios de pago. Presupuesto asignado.</p>
+                </div>
+                <div class="board-footer">
+                    <a href="tablero-publico-lectura.html" class="btn btn-outline btn-sm">Ver tablero</a>
+                    <span class="board-members">👥 6 miembros</span>
+                </div>
+            </div>
+
+            <div class="board-card">
+                <div class="board-cover" style="background: linear-gradient(135deg, #8DA47E, #6C825F);"></div>
+                <div class="board-content">
+                    <h3>Gestión de Incidencias</h3>
+                    <p>Tickets de soporte y bugs reportados por los usuarios en la versión de producción.</p>
+                </div>
+                <div class="board-footer">
+                    <a href="tablero-publico-lectura.html" class="btn btn-outline btn-sm">Ver tablero</a>
+                    <span class="board-members">👥 3 miembros</span>
+                </div>
+            </div>
+        </div>
+
+        <!--Paginación:-->
+        <div class="pagination">
+            <a href="#" class="page-link">&lt;</a>
+            <a href="#" class="page-link active">1</a>
+            <a href="#" class="page-link">2</a>
+            <a href="#" class="page-link">3</a>
+            <a href="#" class="page-link">&gt;</a>
+        </div>
+
+    </main>
+
+    <!--Pie de página:-->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <span>&copy; 2026 ProyecTIC &middot; Sistemas Web I</span>
+        </div>
+        <div class="footer-right">
+            <a href="contacto.html">Contacto</a> &middot;
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+        </div>
+    </footer>
+
+    <!--JS:-->
+    <script src="../js/global.js"></script>
+</body>
+</html>

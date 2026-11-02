@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProyecTIC - Proyecto Alpha (Tablero)</title>
+    <!--CSS:-->
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body class="bg-board">
+
+    <!--Cabecera:-->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <img src="../logo.png" alt="ProyecTIC Logo" class="logo">
+            </a>
+            <nav class="main-nav">
+                <a href="tableros-publicos.html">Tableros públicos</a>
+                <a href="mis-tableros.html" class="active">Mis tableros</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="user-menu">
+                <a href="perfil.html" class="header-avatar" style="text-decoration: none;">U</a>
+                <button class="user-dropdown-btn" onclick="window.location.href='perfil.html'">Usuario <span class="arrow-down">▼</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!--Contenido principal:-->
+    <main class="board-view-main">
+        
+        <!--Cabecera del tablero:-->
+        <div class="board-view-header">
+            <div class="breadcrumbs">
+                <a href="mis-tableros.html">Mis tableros</a> <span class="separator">›</span> <span>Proyecto Alpha</span>
+            </div>
+            
+            <div class="board-header-content">
+                <div class="board-title-group">
+                    <h1>Proyecto Alpha</h1>
+                </div>
+                
+                <div class="board-live-status">
+                    <div class="sync-status">
+                        <span class="sync-dot"></span> Sincronizado
+                    </div>
+                    <div class="online-users">
+                        <span class="online-text">En línea:</span>
+                        <div class="avatar-group">
+                            <div class="mini-avatar" style="background-color: var(--brand-orange);" title="Tú">U</div>
+                            <div class="mini-avatar" style="background-color: var(--brand-blue);" title="Ana">A</div>
+                            <div class="mini-avatar" style="background-color: var(--text-light);" title="Desconectado (Carlos)">C</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="board-admin-actions">
+                    <button class="btn btn-dashed" onclick="window.location.href='miembros.html'">Invitar</button>
+                    <button class="btn btn-dashed" onclick="window.location.href='ajustes-tablero.html'">Ajustes</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Kanban:-->
+        <div class="kanban-container">
+            
+            <!--Columna Pendiente:-->
+            <div class="kanban-column">
+                <div class="kanban-column-header">
+                    <h3 class="kanban-column-title">Pendiente</h3>
+                    <span class="kanban-column-count">3</span>
+                </div>
+                <div class="kanban-cards-list">
+                    <!--Tarjeta 1:-->
+                    <a href="detalle-tarjeta.html" class="kanban-card">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title">Diseñar wireframes de la vista de tablero</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date">15 Oct</span>
+                                <span class="meta-item">💬 2 coment.</span>
+                            </div>
+                            <div class="kanban-card-avatar" title="Asignado a Ana">A</div>
+                        </div>
+                    </a>
+                    <!--Tarjeta 2:-->
+                    <a href="detalle-tarjeta.html" class="kanban-card">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title">Definir paleta de colores final</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date">18 Oct</span>
+                            </div>
+                            <div class="kanban-card-avatar" style="background-color: var(--brand-orange);" title="Asignado a Carlos">C</div>
+                        </div>
+                    </a>
+                    <!--Tarjeta 3:-->
+                    <a href="detalle-tarjeta.html" class="kanban-card">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title">Redactar textos para la landing page</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="meta-item">💬 1 coment.</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <a href="nueva-tarjeta.html" class="add-card-btn" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">+ Añadir tarjeta</a>
+            </div>
+
+            <!--Columna En proceso:-->
+            <div class="kanban-column">
+                <div class="kanban-column-header">
+                    <h3 class="kanban-column-title">En Proceso</h3>
+                    <span class="kanban-column-count">2</span>
+                </div>
+                <div class="kanban-cards-list">
+                    <a href="detalle-tarjeta.html" class="kanban-card">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title">Maquetar vista de registro en HTML/CSS</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date badge-urgent">Hoy</span>
+                                <span class="meta-item">💬 4 coment.</span>
+                            </div>
+                            <div class="kanban-card-avatar" title="Asignado a Ana">A</div>
+                        </div>
+                    </a>
+                    <a href="detalle-tarjeta.html" class="kanban-card">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title">Configurar servidor de desarrollo local</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date">16 Oct</span>
+                            </div>
+                            <div class="kanban-card-avatar" style="background-color: var(--brand-dark);" title="Asignado a Laura">L</div>
+                        </div>
+                    </a>
+                </div>
+                <a href="nueva-tarjeta.html" class="add-card-btn" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">+ Añadir tarjeta</a>
+            </div>
+
+            <!--Columna Terminado:-->
+            <div class="kanban-column">
+                <div class="kanban-column-header">
+                    <h3 class="kanban-column-title">Terminado</h3>
+                    <span class="kanban-column-count">2</span>
+                </div>
+                <div class="kanban-cards-list">
+                    <a href="detalle-tarjeta.html" class="kanban-card">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title" style="text-decoration: line-through; color: var(--text-light);">Reunión inicial de toma de requisitos</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date">10 Oct</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="detalle-tarjeta.html" class="kanban-card">
+                        <div class="kanban-card-content">
+                            <h4 class="kanban-card-title" style="text-decoration: line-through; color: var(--text-light);">Crear repositorio en GitHub</h4>
+                        </div>
+                        <div class="kanban-card-footer">
+                            <div class="kanban-card-meta">
+                                <span class="badge-date">11 Oct</span>
+                            </div>
+                            <div class="kanban-card-avatar" style="background-color: var(--brand-dark);" title="Asignado a Laura">L</div>
+                        </div>
+                    </a>
+                </div>
+                <a href="nueva-tarjeta.html" class="add-card-btn" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">+ Añadir tarjeta</a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!--Pie de página:-->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <span>&copy; 2026 ProyecTIC &middot; Sistemas Web I</span>
+        </div>
+        <div class="footer-right">
+            <a href="contacto.html">Contacto</a> &middot;
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+        </div>
+    </footer>
+
+    <!--JS:-->
+    <script src="../js/global.js"></script>
+</body>
+</html>

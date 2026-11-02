@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProyecTIC - Crear tablero</title>
+    <!--CSS:-->
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body class="bg-alt">
+
+    <!--Cabecera (logueado):-->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <img src="../logo.png" alt="ProyecTIC Logo" class="logo">
+            </a>
+            <nav class="main-nav">
+                <a href="tableros-publicos.html">Tableros públicos</a>
+                <a href="mis-tableros.html" class="active">Mis tableros</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <!--Menú de usuario:-->
+            <div class="user-menu">
+                <a href="perfil.html" class="header-avatar" style="text-decoration: none;">U</a>
+                <button class="user-dropdown-btn" onclick="window.location.href='perfil.html'">Usuario <span class="arrow-down">▼</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!--Contenido principal:-->
+    <main class="create-board-main">
+        
+        <div class="create-board-header">
+            <!--Migas de pan:-->
+            <div class="breadcrumbs">
+                <a href="mis-tableros.html">Mis tableros</a> <span class="separator">›</span> <span>Crear tablero</span>
+            </div>
+            <h1>Crear tablero</h1>
+        </div>
+
+        <div class="create-board-grid">
+            
+            <!--Formulario:-->
+            <div class="form-card">
+                <form id="create-board-form" action="tablero.html">
+                    
+                    <div class="form-group">
+                        <label for="board-name">Nombre del tablero *</label>
+                        <input type="text" id="board-name" placeholder="Ej.: Trabajo de Sistemas Web" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="board-desc">Descripción</label>
+                        <textarea id="board-desc" placeholder="Describe brevemente el proyecto..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Visibilidad</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="visibility" value="private" checked>
+                                <span>Privado (solo miembros)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="visibility" value="public">
+                                <span>Público (visible para invitados)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions-inline">
+                        <a href="mis-tableros.html" class="btn btn-outline">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Crear tablero</button>
+                    </div>
+                    
+                </form>
+            </div>
+
+            <!--Tarjeta informativa:-->
+            <aside class="create-board-sidebar">
+                <div class="info-card-dashed">
+                    <h3>Columnas por defecto</h3>
+                    <p>1. Pendiente &nbsp;&nbsp; 2. En Proceso &nbsp;&nbsp; 3. Terminado</p>
+                    
+                    <div class="skeleton-line" style="width: 100%; margin-top: 15px;"></div>
+                    <div class="skeleton-line" style="width: 75%; margin-top: 10px;"></div>
+                </div>
+                
+                <p class="role-note text-blue">El creador pasa a ser Administrador del tablero</p>
+            </aside>
+
+        </div>
+
+    </main>
+
+    <!--Pie de página:-->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <span>&copy; 2026 ProyecTIC &middot; Sistemas Web I</span>
+        </div>
+        <div class="footer-right">
+            <a href="contacto.html">Contacto</a> &middot;
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+        </div>
+    </footer>
+
+    <!--JS:-->
+    <script src="../js/global.js"></script>
+</body>
+</html>

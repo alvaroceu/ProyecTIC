@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProyecTIC - Nueva tarjeta</title>
+    <!--CSS:-->
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body class="bg-alt">
+
+    <!--Cabecera (logueado):-->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <img src="../logo.png" alt="ProyecTIC Logo" class="logo">
+            </a>
+            <nav class="main-nav">
+                <a href="tableros-publicos.html">Tableros públicos</a>
+                <a href="mis-tableros.html" class="active">Mis tableros</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <!--Menú de usuario:-->
+            <div class="user-menu">
+                <a href="perfil.html" class="header-avatar" style="text-decoration: none;">U</a>
+                <button class="user-dropdown-btn" onclick="window.location.href='perfil.html'">Usuario <span class="arrow-down">▼</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!--Contenido principal:-->
+    <main class="new-card-main">
+        
+        <!--Migas de pan:-->
+        <div class="breadcrumbs">
+            <a href="mis-tableros.html">Mis tableros</a> <span class="separator">›</span> <a href="tablero.html">Proyecto Alpha</a> <span class="separator">›</span> <span>Nueva tarjeta</span>
+        </div>
+
+        <div class="new-card-header">
+            <h1>Nueva tarjeta</h1>
+        </div>
+
+        <div class="new-card-container">
+            <div class="form-card">
+                <form id="new-card-form" action="tablero.html">
+                    
+                    <div class="form-group">
+                        <label for="card-title">Título *</label>
+                        <input type="text" id="card-title" placeholder="Título de la tarjeta" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="card-desc">Descripción</label>
+                        <textarea id="card-desc" placeholder="Descripción de la tarea..." style="min-height: 180px;"></textarea>
+                    </div>
+                    
+                    <div class="form-row-custom">
+                        <div class="form-group">
+                            <label for="card-date">Fecha límite (opcional)</label>
+                            <input type="date" id="card-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="card-column">Columna</label>
+                            <select id="card-column" class="form-select">
+                                <option value="pendiente" selected>Pendiente</option>
+                                <option value="en-proceso">En Proceso</option>
+                                <option value="terminado">Terminado</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions-inline" style="margin-top: 35px;">
+                        <a href="tablero.html" class="btn btn-outline">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Crear tarjeta</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!--Pie de página:-->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <span>&copy; 2026 ProyecTIC &middot; Sistemas Web I</span>
+        </div>
+        <div class="footer-right">
+            <a href="contacto.html">Contacto</a> &middot;
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+        </div>
+    </footer>
+
+    <!--JS:-->
+    <script src="../js/global.js"></script>
+</body>
+</html>

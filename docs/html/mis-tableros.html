@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProyecTIC - Mis tableros</title>
+    <!--CSS:-->
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body class="bg-alt">
+
+    <!--Cabecera (logueado):-->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <img src="../logo.png" alt="ProyecTIC Logo" class="logo">
+            </a>
+            <nav class="main-nav">
+                <a href="tableros-publicos.html">Tableros públicos</a>
+                <a href="mis-tableros.html" class="active">Mis tableros</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <!--Menú de usuario:-->
+            <div class="user-menu">
+                <a href="perfil.html" class="header-avatar" style="text-decoration: none;">U</a>
+                <button class="user-dropdown-btn" onclick="window.location.href='perfil.html'">Usuario <span class="arrow-down">▼</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!--Contenido principal:-->
+    <main class="my-boards-main">
+        
+        <!--Cabecera:-->
+        <div class="my-boards-header">
+            <h1>Mis tableros</h1>
+            <a href="crear-tablero.html" class="btn btn-primary">+ Crear tablero</a>
+        </div>
+
+        <!--Filtros:-->
+        <div class="board-filters">
+            <button class="filter-btn active">Todos</button>
+            <button class="filter-btn">Propios</button>
+            <button class="filter-btn">Compartidos conmigo</button>
+        </div>
+
+        <!--Cuadrícula de tableros:-->
+        <div class="boards-grid">
+            
+            <!--Nuevo tablero:-->
+            <a href="crear-tablero.html" class="board-card create-new-card">
+                <div class="create-new-content">
+                    <span class="icon-plus">+</span>
+                    <span>Nuevo tablero</span>
+                </div>
+            </a>
+
+            <!--Tablero propio:-->
+            <div class="board-card private-board-card">
+                <div class="private-board-header">
+                    <h3>Proyecto Alpha</h3>
+                    <span class="badge badge-role role-admin">Admin</span>
+                </div>
+                <div class="board-content">
+                    <p>Tablero general para el seguimiento del desarrollo de la nueva aplicación móvil. Fase inicial.</p>
+                </div>
+                <div class="private-board-footer">
+                    <div class="board-meta-left">
+                        <a href="tablero.html" class="btn btn-outline btn-sm">Abrir</a>
+                        <div class="avatar-group">
+                            <div class="mini-avatar" style="background-color: var(--brand-orange);" title="Tú">U</div>
+                            <div class="mini-avatar" style="background-color: var(--brand-blue);" title="Ana">A</div>
+                            <div class="mini-avatar" style="background-color: var(--brand-dark);" title="Carlos">C</div>
+                        </div>
+                    </div>
+                    <span class="badge badge-visibility visibility-private">Privado</span>
+                </div>
+            </div>
+
+            <!--Tablero compartido (colaborador):-->
+            <div class="board-card private-board-card">
+                <div class="private-board-header">
+                    <h3>Rediseño Web</h3>
+                    <span class="badge badge-role role-colab">Colaborador</span>
+                </div>
+                <div class="board-content">
+                    <p>Tareas de diseño UI/UX para la web corporativa de 2026. Revisión de wireframes.</p>
+                </div>
+                <div class="private-board-footer">
+                    <div class="board-meta-left">
+                        <a href="tablero.html" class="btn btn-outline btn-sm">Abrir</a>
+                        <div class="avatar-group">
+                            <div class="mini-avatar" style="background-color: var(--brand-dark);" title="Laura">L</div>
+                            <div class="mini-avatar" style="background-color: var(--brand-orange);" title="Tú">U</div>
+                        </div>
+                    </div>
+                    <span class="badge badge-visibility visibility-public">Público</span>
+                </div>
+            </div>
+
+            <!--Tablero compartido (invitado):-->
+            <div class="board-card private-board-card">
+                <div class="private-board-header">
+                    <h3>Campaña Marketing Q3</h3>
+                    <span class="badge badge-role role-guest">Invitado</span>
+                </div>
+                <div class="board-content">
+                    <p>Planificación de contenidos para redes sociales y anuncios de pago. Presupuesto asignado.</p>
+                </div>
+                <div class="private-board-footer">
+                    <div class="board-meta-left">
+                        <a href="tablero-publico-lectura.html" class="btn btn-outline btn-sm">Abrir</a>
+                        <div class="avatar-group">
+                            <div class="mini-avatar" style="background-color: var(--brand-blue);" title="David">D</div>
+                            <div class="mini-avatar" style="background-color: var(--brand-dark);" title="Ana">A</div>
+                            <div class="mini-avatar" style="background-color: var(--brand-orange);" title="Tú">U</div>
+                        </div>
+                    </div>
+                    <span class="badge badge-visibility visibility-private">Privado</span>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!--Pie de página:-->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <span>&copy; 2026 ProyecTIC &middot; Sistemas Web I</span>
+        </div>
+        <div class="footer-right">
+            <a href="contacto.html">Contacto</a> &middot;
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+        </div>
+    </footer>
+
+    <!--JS:-->
+    <script src="../js/global.js"></script>
+</body>
+</html>
