@@ -4,11 +4,17 @@ require('dotenv').config({ path: path.join(__dirname, '..', '.env'), quiet: true
 
 const http = require('http');
 const app = require('../app');
+const { sequelize } = require('../database');
 
 const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
-server.listen(port);
+sequelize.sync()
+  .then(() => server.listen(port))
+  .catch((err) => {
+    console.error('No se pudo inicializar la base de datos:', err);
+    process.exit(1);
+  });
 
 server.on('listening', () => {
   console.log(`ProyecTIC escuchando en http://localhost:${port}`);
