@@ -1,8 +1,48 @@
 <%- include('partials/header') %>
 
-    <main>
-        <h1>Hola, <%= user.name %></h1>
-        <p>Aquí aparecerán tus tableros.</p>
+    <main class="my-boards-main">
+
+        <div class="my-boards-header">
+            <h1>Mis tableros</h1>
+            <a href="/boards/new" class="btn btn-primary">+ Crear tablero</a>
+        </div>
+
+        <%
+            const ROLES = {
+                admin: { name: 'Admin', css: 'role-admin' },
+                collaborator: { name: 'Colaborador', css: 'role-colab' },
+                guest: { name: 'Invitado', css: 'role-guest' },
+            };
+        %>
+
+        <div class="boards-grid">
+
+            <a href="/boards/new" class="board-card create-new-card">
+                <div class="create-new-content">
+                    <span class="icon-plus">+</span>
+                    <span>Nuevo tablero</span>
+                </div>
+            </a>
+
+            <% memberships.forEach((m) => { %>
+                <div class="board-card private-board-card">
+                    <div class="private-board-header">
+                        <h3><%= m.Board.name %></h3>
+                        <span class="badge badge-role <%= ROLES[m.role].css %>"><%= ROLES[m.role].name %></span>
+                    </div>
+                    <div class="board-content">
+                        <p><%= m.Board.description || 'Sin descripción' %></p>
+                    </div>
+                    <div class="private-board-footer">
+                        <div class="board-meta-left">
+                            <a href="/boards/<%= m.Board.id %>" class="btn btn-outline btn-sm">Abrir</a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+
+        </div>
+
     </main>
 
 <%- include('partials/footer') %>

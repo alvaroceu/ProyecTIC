@@ -1,0 +1,65 @@
+<%- include('partials/header') %>
+
+    <main class="board-view-main">
+
+        <div class="board-view-header">
+            <div class="breadcrumbs">
+                <a href="/boards">Mis tableros</a> <span class="separator">›</span> <span><%= board.name %></span>
+            </div>
+
+            <div class="board-header-content">
+                <div class="board-title-group">
+                    <h1><%= board.name %></h1>
+                </div>
+
+                <% if (role === 'admin') { %>
+                    <div class="board-admin-actions">
+                        <a href="/boards/<%= board.id %>/members" class="btn btn-dashed">Invitar</a>
+                        <a href="/boards/<%= board.id %>/settings" class="btn btn-dashed">Ajustes</a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <% const canEdit = role !== 'guest'; %>
+
+        <div class="kanban-container" data-board-id="<%= board.id %>">
+            <% board.BoardColumns.forEach((column) => { %>
+                <div class="kanban-column">
+                    <div class="kanban-column-header">
+                        <h3 class="kanban-column-title"><%= column.name %></h3>
+                        <span class="kanban-column-count"><%= column.Cards.length %></span>
+                    </div>
+
+                    <div class="kanban-cards-list" data-column-id="<%= column.id %>">
+                        <% column.Cards.forEach((card) => { %>
+                            <div class="kanban-card <%= canEdit ? '' : 'readonly' %>"
+                                 data-card-id="<%= card.id %>"
+                                 draggable="<%= canEdit %>">
+                                <div class="kanban-card-content">
+<h4 class="kanban-card-title"><a href="/boards/<%= board.id %>/cards/<%= card.id %>" class="kanban-card-link"><%= card.title %></a></h4>                                </div>
+                                <% if (card.dueDate) { %>
+                                    <div class="kanban-card-footer">
+                                        <div class="kanban-card-meta">
+                                            <span class="badge-date"><%= card.dueDate %></span>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% }) %>
+                    </div>
+
+                    <% if (canEdit) { %>
+                        <a href="/boards/<%= board.id %>/cards/new?column=<%= column.id %>" class="add-card-btn">+ Añadir tarjeta</a>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+
+    </main>
+
+    <% if (canEdit) { %>
+        <script src="/js/board.js"></script>
+    <% } %>
+
+<%- include('partials/footer') %>
