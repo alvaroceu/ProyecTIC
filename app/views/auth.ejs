@@ -1,0 +1,53 @@
+<%- include('partials/header') %>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <div class="auth-tabs">
+                <a href="/login" class="tab-btn<%= mode === 'login' ? ' active' : '' %>">Iniciar sesión</a>
+                <a href="/register" class="tab-btn<%= mode === 'register' ? ' active' : '' %>">Registrarse</a>
+            </div>
+
+            <% if (error) { %>
+                <p class="form-error"><%= error %></p>
+            <% } %>
+
+            <form method="post" action="<%= mode === 'login' ? '/login' : '/register' %>">
+                <% if (mode === 'register') { %>
+                    <div class="form-group">
+                        <label for="name">Nombre</label>
+                        <input type="text" id="name" name="name" value="<%= values.name || '' %>" placeholder="Tu nombre" autocomplete="name" required>
+                    </div>
+                <% } %>
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" name="email" value="<%= values.email || '' %>" placeholder="nombre@correo.com" autocomplete="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <% if (mode === 'login') { %>
+                        <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+                    <% } else { %>
+                        <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="new-password" minlength="<%= minPasswordLength %>" required>
+                    <% } %>
+                </div>
+                <% if (mode === 'register') { %>
+                    <div class="form-group">
+                        <label for="password-confirm">Repetir contraseña</label>
+                        <input type="password" id="password-confirm" name="passwordConfirm" placeholder="••••••••" autocomplete="new-password" minlength="<%= minPasswordLength %>" required>
+                    </div>
+                <% } %>
+                <button type="submit" class="btn btn-primary btn-block"><%= mode === 'login' ? 'Entrar' : 'Crear cuenta' %></button>
+            </form>
+
+            <div class="auth-links">
+                <% if (mode === 'login') { %>
+                    <a href="#" class="text-sm">¿Has olvidado tu contraseña?</a>
+                    <a href="/register" class="text-sm">¿No tienes cuenta? Regístrate</a>
+                <% } else { %>
+                    <a href="/login" class="text-sm">¿Ya tienes cuenta? Inicia sesión</a>
+                <% } %>
+            </div>
+        </div>
+    </main>
+
+<%- include('partials/footer') %>

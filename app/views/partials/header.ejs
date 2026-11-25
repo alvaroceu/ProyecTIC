@@ -6,16 +6,31 @@
     <title>ProyecTIC - <%= title %></title>
     <link rel="stylesheet" href="/css/global.css">
 </head>
-<body>
+<body class="<%= locals.bodyClass || '' %>">
 
     <header class="main-header">
         <div class="header-left">
             <a href="/" class="logo-link">
                 <img src="/img/logo.png" alt="ProyecTIC Logo" class="logo">
             </a>
+            <% if (user) { %>
+                <nav class="main-nav">
+                    <a href="/boards">Mis tableros</a>
+                </nav>
+            <% } %>
         </div>
         <div class="header-right">
-            <a href="/login" class="btn btn-outline">Iniciar sesión</a>
-            <a href="/register" class="btn btn-primary">Registrarse</a>
+            <% if (user) { %>
+                <div class="user-menu">
+                    <span class="header-avatar"><%= user.name.charAt(0).toUpperCase() %></span>
+                    <span class="user-dropdown-btn"><%= user.name %></span>
+                    <form method="post" action="/logout">
+                        <button type="submit" class="btn btn-outline logout-btn">Cerrar sesión</button>
+                    </form>
+                </div>
+            <% } else { %>
+                <a href="/login" class="btn btn-outline">Iniciar sesión</a>
+                <a href="/register" class="btn btn-primary">Registrarse</a>
+            <% } %>
         </div>
     </header>
