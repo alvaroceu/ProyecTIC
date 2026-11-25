@@ -1,0 +1,66 @@
+<%- include('partials/header') %>
+
+    <main class="new-card-main">
+
+        <div class="breadcrumbs">
+            <a href="/boards">Mis tableros</a> <span class="separator">›</span>
+            <a href="/boards/<%= board.id %>"><%= board.name %></a> <span class="separator">›</span>
+            <span>Nueva tarjeta</span>
+        </div>
+
+        <div class="new-card-header">
+            <h1>Nueva tarjeta</h1>
+        </div>
+
+        <div class="new-card-container">
+            <div class="form-card">
+                <% if (error) { %>
+                    <p class="form-error"><%= error %></p>
+                <% } %>
+
+                <form action="/boards/<%= board.id %>/cards" method="post">
+
+                    <div class="form-group">
+                        <label for="card-title">Título *</label>
+                        <input type="text" id="card-title" name="title"
+                               value="<%= values.title || '' %>"
+                               placeholder="Título de la tarjeta" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-desc">Descripción</label>
+                        <textarea id="card-desc" name="description"
+                                  placeholder="Descripción de la tarea..."
+                                  style="min-height: 180px;"><%= values.description || '' %></textarea>
+                    </div>
+
+                    <div class="form-row-custom">
+                        <div class="form-group">
+                            <label for="card-date">Fecha límite (opcional)</label>
+                            <input type="date" id="card-date" name="dueDate" value="<%= values.dueDate || '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="card-column">Columna</label>
+                            <select id="card-column" name="columnId" class="form-select">
+                                <% board.BoardColumns.forEach((column) => { %>
+                                    <option value="<%= column.id %>"
+                                        <%= String(column.id) === String(values.columnId) ? 'selected' : '' %>>
+                                        <%= column.name %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions-inline" style="margin-top: 35px;">
+                        <a href="/boards/<%= board.id %>" class="btn btn-outline">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Crear tarjeta</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+<%- include('partials/footer') %>

@@ -85,3 +85,77 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
+// Busca la membership de la usuaria en un tablero (o null si no es miembro)
+function findMembership(req) {
+  return Membership.findOne({
+    where: { userId: req.session.user.id, boardId: req.params.id },
+  });
+}
+
+// Busca el tablero con sus columnas ordenadas
+function findBoardWithColumns(boardId) {
+  return Board.findByPk(boardId, {
+    include: BoardColumn,
+    order: [[BoardColumn, 'position', 'ASC']],
+  });
+}
+
+// Muestra el formulario para crear una tarjeta (RF4)
+router.get('/:id/cards/new', async (req, res) => {
+  const membership = await findMembership(req);
+  if (!membership) {
+    return res.status(404).send('Tablero no encontrado');
+  }
+  if (membership.role === 'guest') {
+    return res.status(403).send('Los invitados no pueden crear tarjetas');
+  }
+
+  const board = await findBoardWithColumns(req.params.id);
+  res.render('card-new', {
+    title: 'Nueva tarjeta',
+    board,
+    error: null,
+    values: { columnId: req.query.column },
+  });
+});
+
+// Recibe el formulario y crea la tarjeta (RF4)
+router.post('/:id/cards', async (req, res) => {
+  const membership = await findMembership(req);
+  if (!membership) {
+    return res.status(404).send('Tablero no encontrado');
+  }
+  if (membership.role === 'guest') {
+    return res.status(403).send('Los invitados no pueden crear tarjetas');
+  }
+
+  const board = await findBoardWithColumns(req.params.id);
+  const title = (req.body.title || '').trim();
+  const description = (req.body.description || '').trim();
+  const dueDate = req.body.dueDate || null;
+  const columnId = Number(req.body.columnId);
+  const values = { title, description, dueDate, columnId };
+
+  const column = board.BoardColumns.find((c) => c.id === columnId);
+
+  if (!title || !column) {
+    return res.status(400).render('card-new', {
+      title: 'Nueva tarjeta',
+      board,
+      error: !title ? 'El título es obligatorio' : 'Elige una columna válida',
+      values,
+    });
+  }
+
+  const position = await Card.count({ where: { columnId: column.id } });
+
+  await Card.create({
+    title,
+    description: description || null,
+    dueDate,
+    position,
+    columnId: column.id,
+  });
+
+  res.redirect(`/boards/${board.id}`);
+});
