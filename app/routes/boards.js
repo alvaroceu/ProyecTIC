@@ -212,4 +212,127 @@ router.post('/:id/cards/:cardId/move', async (req, res) => {
   res.json({ ok: true });
 });
 
+// Devuelve la tarjeta solo si pertenece a una columna de este tablero (o null)
+async function findCardInBoard(board, cardId) {
+  const card = await Card.findByPk(cardId);
+  if (!card || !board.BoardColumns.some((c) => c.id === card.columnId)) {
+    return null;
+  }
+  return card;
+}
+
+// Muestra el detalle de una tarjeta (RF6). El invitado la ve en solo lectura
+router.get('/:id/cards/:cardId', async (req, res) => {
+  const membership = await findMembership(req);
+  if (!membership) {
+    return res.status(404).send('Tablero no encontrado');
+  }
+
+  const board = await findBoardWithColumns(req.params.id);
+  const card = await findCardInBoard(board, req.params.cardId);
+  if (!card) {
+    return res.status(404).send('Tarjeta no encontrada');
+  }
+
+  res.render('card-detail', {
+    title: card.title,
+    board,
+    card,
+    role: membership.role,
+    error: null,
+    values: {
+      title: card.title,
+      description: card.description,
+      dueDate: card.dueDate,
+      columnId: card.columnId,
+    },
+  });
+});
+
+// Guarda los cambios de una tarjeta (RF6)
+router.post('/:id/cards/:cardId', async (req, res) => {
+  const membership = await findMembership(req);
+  if (!membership) {
+    return res.status(404).send('Tablero no encontrado');
+  }
+  if (membership.role === 'guest') {
+    return res.status(403).send('Los invitados no pueden editar tarjetas');
+  }
+
+  const board = await findBoardWithColumns(req.params.id);
+  const card = await findCardInBoard(board, req.params.cardId);
+  if (!card) {
+    return res.status(404).send('Tarjeta no encontrada');
+  }
+
+  const title = (req.body.title || '').trim();
+  const description = (req.body.description || '').trim();
+  const dueDate = req.body.dueDate || null;
+  const columnId = Number(req.body.columnId);
+  const values = { title, description, dueDate, columnId };
+  const columnExists = board.BoardColumns.some((c) => c.id === columnId);
+
+  if (!title || !columnExists) {
+    return res.status(400).render('card-detail', {
+      title: card.title,
+      board,
+      card,
+      role: membership.role,
+      error: !title ? 'El título es obligatorio' : 'Elige una columna válida',
+      values,
+    });
+  }
+
+  await sequelize.transaction(async (t) => {
+    // Si cambia de columna: sale de la vieja (las de detrás suben) y va al final de la nueva
+    if (columnId !== card.columnId) {
+      await Card.decrement('position', {
+        by: 1,
+        where: { columnId: card.columnId, position: { [Op.gt]: card.position } },
+        transaction: t,
+      });
+      card.position = await Card.count({ where: { columnId }, transaction: t });
+      card.columnId = columnId;
+    }
+
+    card.title = title;
+    card.description = description || null;
+    card.dueDate = dueDate;
+    await card.save({ transaction: t });
+  });
+
+  res.redirect(`/boards/${board.id}`);
+});
+
+// Elimina una tarjeta (RF6)
+router.post('/:id/cards/:cardId/delete', async (req, res) => {
+  const membership = await findMembership(req);
+  if (!membership) {
+    return res.status(404).send('Tablero no encontrado');
+  }
+  if (membership.role === 'guest') {
+    return res.status(403).send('Los invitados no pueden eliminar tarjetas');
+  }
+
+  const board = await findBoardWithColumns(req.params.id);
+  const card = await findCardInBoard(board, req.params.cardId);
+  if (!card) {
+    return res.status(404).send('Tarjeta no encontrada');
+  }
+
+  await sequelize.transaction(async (t) => {
+    const { columnId, position } = card;
+    await card.destroy({ transaction: t });
+    // Las tarjetas que estaban detrás suben un puesto
+    await Card.decrement('position', {
+      by: 1,
+      where: { columnId, position: { [Op.gt]: position } },
+      transaction: t,
+    });
+  });
+
+  res.redirect(`/boards/${board.id}`);
+});
+
 module.exports = router;
+

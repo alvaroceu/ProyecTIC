@@ -1985,3 +1985,6 @@ a.tab-btn { text-align: center; }
 /* Arrastrar tarjetas (RF5) */
 .kanban-cards-list { min-height: 40px; }
 .kanban-card.dragging { opacity: 0.5; }
+
+.kanban-card-link { color: inherit; text-decoration: none; }
+.kanban-card-link:hover { text-decoration: underline; }

@@ -37,8 +37,7 @@
                                  data-card-id="<%= card.id %>"
                                  draggable="<%= canEdit %>">
                                 <div class="kanban-card-content">
-                                    <h4 class="kanban-card-title"><%= card.title %></h4>
-                                </div>
+<h4 class="kanban-card-title"><a href="/boards/<%= board.id %>/cards/<%= card.id %>" class="kanban-card-link"><%= card.title %></a></h4>                                </div>
                                 <% if (card.dueDate) { %>
                                     <div class="kanban-card-footer">
                                         <div class="kanban-card-meta">
