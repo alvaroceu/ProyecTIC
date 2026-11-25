@@ -1,5 +1,5 @@
 const express = require('express');
-const { sequelize, Board, Membership, BoardColumn } = require('../database');
+const { sequelize, Board, Membership, BoardColumn, Card } = require('../database');
 
 const router = express.Router();
 
@@ -56,6 +56,32 @@ router.post('/', async (req, res) => {
   });
 
   res.redirect('/boards');
+});
+
+// Muestra un tablero con sus columnas y tarjetas, solo a sus miembros (RF2)
+router.get('/:id', async (req, res) => {
+  const membership = await Membership.findOne({
+    where: { userId: req.session.user.id, boardId: req.params.id },
+  });
+
+  if (!membership) {
+    return res.status(404).send('Tablero no encontrado');
+  }
+
+  const board = await Board.findByPk(req.params.id, {
+    include: { model: BoardColumn, include: Card },
+    order: [
+      [BoardColumn, 'position', 'ASC'],
+      [BoardColumn, Card, 'position', 'ASC'],
+    ],
+  });
+
+  res.render('board', {
+    title: board.name,
+    bodyClass: 'bg-board',
+    board,
+    role: membership.role,
+  });
 });
 
 module.exports = router;
