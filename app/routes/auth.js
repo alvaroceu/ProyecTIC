@@ -2,10 +2,9 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const { UniqueConstraintError, ValidationError } = require('sequelize');
 const { User } = require('../database');
+const { MIN_PASSWORD_LENGTH, BCRYPT_COST } = require('../config/passwords');
 
 const router = express.Router();
-const MIN_PASSWORD_LENGTH = 8;
-const BCRYPT_COST = 10;
 
 function renderAuth(res, status, mode, error, values) {
   res.status(status).render('auth', {

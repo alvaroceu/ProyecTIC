@@ -1981,3 +1981,5 @@ a.kanban-card {
 }
 a.tab-btn { text-align: center; }
 .form-error { background-color: #FEE2E2; color: #DC2626; padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; margin-bottom: 20px; }
+.form-success { background-color: #DCFCE7; color: #15803D; padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; margin-bottom: 20px; }
+.profile-initial { font-size: 5rem; font-weight: 800; color: var(--brand-blue); }

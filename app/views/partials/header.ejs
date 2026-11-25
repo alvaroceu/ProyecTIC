@@ -23,7 +23,7 @@
             <% if (user) { %>
                 <div class="user-menu">
                     <span class="header-avatar"><%= user.name.charAt(0).toUpperCase() %></span>
-                    <span class="user-dropdown-btn"><%= user.name %></span>
+                    <a href="/profile" class="user-dropdown-btn"><%= user.name %></a>
                     <form method="post" action="/logout">
                         <button type="submit" class="btn btn-outline logout-btn">Cerrar sesión</button>
                     </form>

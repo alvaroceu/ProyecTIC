@@ -1,0 +1,66 @@
+<%- include('partials/header') %>
+
+    <main class="profile-main">
+        <div class="profile-header">
+            <h1>Mi perfil</h1>
+        </div>
+
+        <% if (success) { %>
+            <p class="form-success"><%= success %></p>
+        <% } %>
+        <% if (error) { %>
+            <p class="form-error"><%= error %></p>
+        <% } %>
+
+        <div class="profile-card">
+            <div class="profile-grid">
+                <div class="profile-photo-col">
+                    <div class="profile-photo-placeholder">
+                        <span class="profile-initial"><%= user.name.charAt(0).toUpperCase() %></span>
+                    </div>
+                </div>
+
+                <div class="profile-form-col">
+                    <form method="post" action="/profile">
+                        <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" id="name" name="name" value="<%= values.name %>" placeholder="Tu nombre" autocomplete="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Correo electrónico (no editable)</label>
+                            <input type="email" id="email" value="<%= user.email %>" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="current-password">Contraseña actual (solo si vas a cambiarla)</label>
+                            <input type="password" id="current-password" name="currentPassword" placeholder="••••••••" autocomplete="current-password">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="new-password">Nueva contraseña</label>
+                                <input type="password" id="new-password" name="newPassword" placeholder="••••••••" autocomplete="new-password" minlength="<%= minPasswordLength %>">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password-confirm">Repetir contraseña</label>
+                                <input type="password" id="new-password-confirm" name="newPasswordConfirm" placeholder="••••••••" autocomplete="new-password" minlength="<%= minPasswordLength %>">
+                            </div>
+                        </div>
+
+                        <div class="profile-actions">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="profile-footer-actions">
+                <form method="post" action="/logout">
+                    <button type="submit" class="btn btn-outline logout-btn">Cerrar sesión</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+<%- include('partials/footer') %>
