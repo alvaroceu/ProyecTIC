@@ -2,7 +2,25 @@
 
     <main>
         <h1>Hola, <%= user.name %></h1>
-        <p>Aquí aparecerán tus tableros.</p>
+
+        <a href="/boards/new" class="btn btn-primary">+ Crear tablero</a>
+
+        <% const ROLE_NAMES = { admin: 'Administrador', collaborator: 'Colaborador', guest: 'Invitado' }; %>
+
+        <% if (memberships.length === 0) { %>
+            <p>Todavía no tienes tableros.</p>
+        <% } else { %>
+            <ul>
+                <% memberships.forEach((m) => { %>
+                    <li>
+                        <strong><%= m.Board.name %></strong> · <%= ROLE_NAMES[m.role] %>
+                        <% if (m.Board.description) { %>
+                            <br><%= m.Board.description %>
+                        <% } %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
     </main>
 
 <%- include('partials/footer') %>
