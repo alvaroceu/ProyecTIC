@@ -21,7 +21,9 @@
             </div>
         </div>
 
-        <div class="kanban-container">
+        <% const canEdit = role !== 'guest'; %>
+
+        <div class="kanban-container" data-board-id="<%= board.id %>">
             <% board.BoardColumns.forEach((column) => { %>
                 <div class="kanban-column">
                     <div class="kanban-column-header">
@@ -29,9 +31,11 @@
                         <span class="kanban-column-count"><%= column.Cards.length %></span>
                     </div>
 
-                    <div class="kanban-cards-list">
+                    <div class="kanban-cards-list" data-column-id="<%= column.id %>">
                         <% column.Cards.forEach((card) => { %>
-                            <div class="kanban-card">
+                            <div class="kanban-card <%= canEdit ? '' : 'readonly' %>"
+                                 data-card-id="<%= card.id %>"
+                                 draggable="<%= canEdit %>">
                                 <div class="kanban-card-content">
                                     <h4 class="kanban-card-title"><%= card.title %></h4>
                                 </div>
@@ -46,7 +50,7 @@
                         <% }) %>
                     </div>
 
-                    <% if (role !== 'guest') { %>
+                    <% if (canEdit) { %>
                         <a href="/boards/<%= board.id %>/cards/new?column=<%= column.id %>" class="add-card-btn">+ Añadir tarjeta</a>
                     <% } %>
                 </div>
@@ -54,5 +58,9 @@
         </div>
 
     </main>
+
+    <% if (canEdit) { %>
+        <script src="/js/board.js"></script>
+    <% } %>
 
 <%- include('partials/footer') %>

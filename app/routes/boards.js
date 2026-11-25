@@ -1,4 +1,5 @@
 const express = require('express');
+const { Op } = require('sequelize');
 const { sequelize, Board, Membership, BoardColumn, Card } = require('../database');
 
 const router = express.Router();
@@ -84,7 +85,6 @@ router.get('/:id', async (req, res) => {
   });
 });
 
-module.exports = router;
 // Busca la membership de la usuaria en un tablero (o null si no es miembro)
 function findMembership(req) {
   return Membership.findOne({
@@ -159,3 +159,57 @@ router.post('/:id/cards', async (req, res) => {
 
   res.redirect(`/boards/${board.id}`);
 });
+
+// Mueve una tarjeta a otra columna o a otra posición (RF5)
+router.post('/:id/cards/:cardId/move', async (req, res) => {
+  const membership = await findMembership(req);
+  if (!membership) {
+    return res.status(404).json({ error: 'Tablero no encontrado' });
+  }
+  if (membership.role === 'guest') {
+    return res.status(403).json({ error: 'Los invitados no pueden mover tarjetas' });
+  }
+
+  const board = await findBoardWithColumns(req.params.id);
+  const columnIds = board.BoardColumns.map((c) => c.id);
+  const card = await Card.findByPk(req.params.cardId);
+  const columnId = Number(req.body.columnId);
+
+  // La tarjeta y la columna de destino tienen que ser de este tablero
+  if (!card || !columnIds.includes(card.columnId) || !columnIds.includes(columnId)) {
+    return res.status(400).json({ error: 'Movimiento no válido' });
+  }
+
+  await sequelize.transaction(async (t) => {
+    // 1. Sacar la tarjeta de su columna: las que estaban detrás suben un puesto
+    await Card.decrement('position', {
+      by: 1,
+      where: { columnId: card.columnId, position: { [Op.gt]: card.position } },
+      transaction: t,
+    });
+
+    // 2. Calcular la posición nueva (si no es válida, al final de la columna)
+    const total = await Card.count({
+      where: { columnId, id: { [Op.ne]: card.id } },
+      transaction: t,
+    });
+    let position = Number(req.body.position);
+    if (!Number.isInteger(position) || position < 0 || position > total) {
+      position = total;
+    }
+
+    // 3. Hacer hueco en la columna de destino: las de esa posición en adelante bajan un puesto
+    await Card.increment('position', {
+      by: 1,
+      where: { columnId, position: { [Op.gte]: position }, id: { [Op.ne]: card.id } },
+      transaction: t,
+    });
+
+    // 4. Colocar la tarjeta en su sitio nuevo
+    await card.update({ columnId, position }, { transaction: t });
+  });
+
+  res.json({ ok: true });
+});
+
+module.exports = router;
