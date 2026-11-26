@@ -364,5 +364,96 @@ router.post('/:id/cards/:cardId/comments', async (req, res) => {
   res.redirect(`/boards/${board.id}/cards/${card.id}#comentarios`);
 });
 
+// ---------- Miembros del tablero (RF9) ----------
+
+const INVITE_ROLES = ['collaborator', 'guest'];
+
+// Comprueba que la usuaria es admin del tablero. Si no, responde con el error y devuelve null
+async function requireAdmin(req, res) {
+  const membership = await findMembership(req);
+  if (!membership) {
+    res.status(404).send('Tablero no encontrado');
+    return null;
+  }
+  if (membership.role !== 'admin') {
+    res.status(403).send('Solo el administrador puede gestionar los miembros');
+    return null;
+  }
+  return Board.findByPk(req.params.id);
+}
+
+// Carga los miembros del tablero (con su usuario) y pinta la página
+async function renderMembers(res, board, status = 200, error = null, values = {}) {
+  const memberships = await Membership.findAll({
+    where: { boardId: board.id },
+    include: { model: User, attributes: ['id', 'name', 'email'] },
+    order: [['createdAt', 'ASC']],
+  });
+  res.status(status).render('members', { title: 'Miembros', board, memberships, error, values });
+}
+
+// Muestra la página de miembros (solo admin)
+router.get('/:id/members', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+  await renderMembers(res, board);
+});
+
+// Invita a un usuario registrado por su correo, como colaborador o invitado
+router.post('/:id/members', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+
+  const email = (req.body.email || '').trim().toLowerCase();
+  const role = req.body.role;
+  const values = { email, role };
+
+  if (!INVITE_ROLES.includes(role)) {
+    return renderMembers(res, board, 400, 'Elige un rol válido', values);
+  }
+
+  const user = await User.findOne({ where: { email } });
+  if (!user) {
+    return renderMembers(res, board, 400, 'No hay ningún usuario registrado con ese correo', values);
+  }
+
+  const alreadyMember = await Membership.findOne({ where: { userId: user.id, boardId: board.id } });
+  if (alreadyMember) {
+    return renderMembers(res, board, 400, 'Ese usuario ya es miembro del tablero', values);
+  }
+
+  await Membership.create({ userId: user.id, boardId: board.id, role });
+  res.redirect(`/boards/${board.id}/members`);
+});
+
+// Cambia el rol de un miembro (entre colaborador e invitado)
+router.post('/:id/members/:memberId', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+
+  const member = await Membership.findOne({ where: { id: req.params.memberId, boardId: board.id } });
+  if (!member || member.role === 'admin' || !INVITE_ROLES.includes(req.body.role)) {
+    return res.status(400).send('Cambio de rol no válido');
+  }
+
+  member.role = req.body.role;
+  await member.save();
+  res.redirect(`/boards/${board.id}/members`);
+});
+
+// Quita a un miembro del tablero (al administrador no se le puede quitar)
+router.post('/:id/members/:memberId/delete', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+
+  const member = await Membership.findOne({ where: { id: req.params.memberId, boardId: board.id } });
+  if (!member || member.role === 'admin') {
+    return res.status(400).send('No se puede quitar a este miembro');
+  }
+
+  await member.destroy();
+  res.redirect(`/boards/${board.id}/members`);
+});
+
 module.exports = router;
 

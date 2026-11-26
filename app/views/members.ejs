@@ -1,0 +1,92 @@
+<%- include('partials/header') %>
+
+    <%
+        const ROLE_NAMES = { admin: 'Administrador', collaborator: 'Colaborador', guest: 'Invitado' };
+        const ROLE_COLORS = { admin: 'var(--brand-orange)', collaborator: 'var(--brand-blue)', guest: '#8DA47E' };
+    %>
+
+    <main class="members-main">
+
+        <div class="breadcrumbs">
+            <a href="/boards">Mis tableros</a> <span class="separator">›</span>
+            <a href="/boards/<%= board.id %>"><%= board.name %></a> <span class="separator">›</span>
+            <span>Miembros</span>
+        </div>
+
+        <h1>Miembros e invitaciones</h1>
+
+        <div class="form-card invite-card">
+            <h3 class="section-title-sm">Invitar usuario</h3>
+
+            <% if (error) { %>
+                <p class="form-error"><%= error %></p>
+            <% } %>
+
+            <form class="invite-form-row" method="post" action="/boards/<%= board.id %>/members">
+                <div class="invite-input-group">
+                    <input type="email" name="email" placeholder="correo@ejemplo.com"
+                           value="<%= values.email || '' %>" required>
+                </div>
+                <div class="invite-select-group">
+                    <select name="role" class="form-select">
+                        <option value="collaborator" <%= values.role === 'guest' ? '' : 'selected' %>>Colaborador</option>
+                        <option value="guest" <%= values.role === 'guest' ? 'selected' : '' %>>Invitado</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-invite">Invitar</button>
+            </form>
+        </div>
+
+        <div class="members-list-card">
+
+            <div class="members-grid-header">
+                <div class="col-header">Usuario</div>
+                <div class="col-header">Correo</div>
+                <div class="col-header">Rol</div>
+                <div class="col-header" style="text-align: right;">Acciones</div>
+            </div>
+
+            <% memberships.forEach((m) => { %>
+                <div class="member-row">
+                    <div class="member-user-col">
+                        <div class="member-avatar" style="background-color: <%= ROLE_COLORS[m.role] %>;">
+                            <%= m.User.name.charAt(0).toUpperCase() %>
+                        </div>
+                        <span class="member-name">
+                            <%= m.User.name %><%= m.userId === user.id ? ' (Tú)' : '' %>
+                        </span>
+                    </div>
+
+                    <div class="member-email-col">
+                        <span class="member-email"><%= m.User.email %></span>
+                    </div>
+
+                    <div class="member-role-col">
+                        <% if (m.role === 'admin') { %>
+                            <span><%= ROLE_NAMES.admin %></span>
+                        <% } else { %>
+                            <form method="post" action="/boards/<%= board.id %>/members/<%= m.id %>">
+                                <select name="role" class="form-select select-sm" onchange="this.form.submit()">
+                                    <option value="collaborator" <%= m.role === 'collaborator' ? 'selected' : '' %>>Colaborador</option>
+                                    <option value="guest" <%= m.role === 'guest' ? 'selected' : '' %>>Invitado</option>
+                                </select>
+                            </form>
+                        <% } %>
+                    </div>
+
+                    <div class="member-action-col">
+                        <% if (m.role !== 'admin') { %>
+                            <form method="post" action="/boards/<%= board.id %>/members/<%= m.id %>/delete"
+                                  onsubmit="return confirm('¿Quitar a <%= m.User.name %> del tablero?');">
+                                <button type="submit" class="btn btn-outline btn-sm btn-danger-outline">Quitar</button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            <% }) %>
+
+        </div>
+
+    </main>
+
+<%- include('partials/footer') %>
