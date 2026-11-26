@@ -1,6 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const { sequelize, Board, Membership, BoardColumn, Card, Comment, User } = require('../database');
+const { notifyBoardChanged } = require('../sockets');
 const router = express.Router();
 
 const DEFAULT_COLUMNS = ['Pendiente', 'En Proceso', 'Terminado'];
@@ -156,6 +157,7 @@ router.post('/:id/cards', async (req, res) => {
     columnId: column.id,
   });
 
+  notifyBoardChanged(board.id);
   res.redirect(`/boards/${board.id}`);
 });
 
@@ -207,7 +209,8 @@ router.post('/:id/cards/:cardId/move', async (req, res) => {
     // 4. Colocar la tarjeta en su sitio nuevo
     await card.update({ columnId, position }, { transaction: t });
   });
-
+  
+  notifyBoardChanged(board.id, req.get('X-Socket-Id'));
   res.json({ ok: true });
 });
 
@@ -307,6 +310,7 @@ router.post('/:id/cards/:cardId', async (req, res) => {
     await card.save({ transaction: t });
   });
 
+  notifyBoardChanged(board.id);
   res.redirect(`/boards/${board.id}`);
 });
 
@@ -337,6 +341,7 @@ router.post('/:id/cards/:cardId/delete', async (req, res) => {
     });
   });
 
+  notifyBoardChanged(board.id);
   res.redirect(`/boards/${board.id}`);
 });
 

@@ -8,6 +8,7 @@ const { sequelize } = require('../database');
 
 const port = process.env.PORT || 3000;
 const server = http.createServer(app);
+require('../sockets').init(server);
 
 sequelize.sync()
   .then(() => server.listen(port))

@@ -51,6 +51,7 @@ document.querySelectorAll('.kanban-column').forEach((column) => {
 
     await fetch(`/boards/${boardId}/cards/${dragged.dataset.cardId}/move`, {
       method: 'POST',
+      headers: { 'X-Socket-Id': socket.id },
       body,
     });
 
