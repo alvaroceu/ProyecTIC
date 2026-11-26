@@ -209,7 +209,7 @@ router.post('/:id/cards/:cardId/move', async (req, res) => {
     // 4. Colocar la tarjeta en su sitio nuevo
     await card.update({ columnId, position }, { transaction: t });
   });
-  
+
   notifyBoardChanged(board.id, req.get('X-Socket-Id'));
   res.json({ ok: true });
 });
@@ -458,6 +458,163 @@ router.post('/:id/members/:memberId/delete', async (req, res) => {
 
   await member.destroy();
   res.redirect(`/boards/${board.id}/members`);
+});
+
+// ---------- Ajustes del tablero (RF10) ----------
+
+// Busca el tablero con sus columnas (ordenadas) y las tarjetas de cada columna
+function findBoardWithColumnsAndCards(boardId) {
+  return Board.findByPk(boardId, {
+    include: { model: BoardColumn, include: Card },
+    order: [[BoardColumn, 'position', 'ASC']],
+  });
+}
+
+// Pinta la página de ajustes, con un mensaje de error si hace falta
+async function renderSettings(res, boardId, status = 200, error = null) {
+  const board = await findBoardWithColumnsAndCards(boardId);
+  res.status(status).render('settings', { title: 'Ajustes', board, error });
+}
+
+// Muestra la página de ajustes (solo admin)
+router.get('/:id/settings', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+  await renderSettings(res, board.id);
+});
+
+// Cambia el nombre y la descripción del tablero
+router.post('/:id/settings', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+
+  const name = (req.body.name || '').trim();
+  const description = (req.body.description || '').trim();
+  if (!name) {
+    return renderSettings(res, board.id, 400, 'El nombre del tablero es obligatorio');
+  }
+
+  board.name = name;
+  board.description = description || null;
+  await board.save();
+  notifyBoardChanged(board.id);
+  res.redirect(`/boards/${board.id}/settings`);
+});
+
+// Añade una columna al final
+router.post('/:id/columns', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+
+  const name = (req.body.name || '').trim();
+  if (!name) {
+    return renderSettings(res, board.id, 400, 'La columna necesita un nombre');
+  }
+
+  const position = await BoardColumn.count({ where: { boardId: board.id } });
+  await BoardColumn.create({ name, position, boardId: board.id });
+  notifyBoardChanged(board.id);
+  res.redirect(`/boards/${board.id}/settings`);
+});
+
+// Renombra una columna
+router.post('/:id/columns/:columnId', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+
+  const column = await BoardColumn.findOne({ where: { id: req.params.columnId, boardId: board.id } });
+  const name = (req.body.name || '').trim();
+  if (!column || !name) {
+    return renderSettings(res, board.id, 400, 'La columna necesita un nombre');
+  }
+
+  column.name = name;
+  await column.save();
+  notifyBoardChanged(board.id);
+  res.redirect(`/boards/${board.id}/settings`);
+});
+
+// Sube o baja una columna un puesto (intercambia su posición con la de al lado)
+router.post('/:id/columns/:columnId/move', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+
+  const columns = await BoardColumn.findAll({
+    where: { boardId: board.id },
+    order: [['position', 'ASC']],
+  });
+  const index = columns.findIndex((c) => c.id === Number(req.params.columnId));
+  const otherIndex = req.body.direction === 'up' ? index - 1 : index + 1;
+
+  if (index !== -1 && otherIndex >= 0 && otherIndex < columns.length) {
+    const column = columns[index];
+    const other = columns[otherIndex];
+    await sequelize.transaction(async (t) => {
+      const position = column.position;
+      await column.update({ position: other.position }, { transaction: t });
+      await other.update({ position }, { transaction: t });
+    });
+    notifyBoardChanged(board.id);
+  }
+
+  res.redirect(`/boards/${board.id}/settings`);
+});
+
+// Elimina una columna: solo si está vacía y no es la última del tablero
+router.post('/:id/columns/:columnId/delete', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+
+  const column = await BoardColumn.findOne({ where: { id: req.params.columnId, boardId: board.id } });
+  if (!column) {
+    return renderSettings(res, board.id, 404, 'La columna no existe');
+  }
+
+  const totalColumns = await BoardColumn.count({ where: { boardId: board.id } });
+  if (totalColumns === 1) {
+    return renderSettings(res, board.id, 400, 'Un tablero tiene que tener al menos una columna');
+  }
+
+  const cardsInColumn = await Card.count({ where: { columnId: column.id } });
+  if (cardsInColumn > 0) {
+    return renderSettings(res, board.id, 400, `No se puede eliminar "${column.name}" porque tiene tarjetas`);
+  }
+
+  await sequelize.transaction(async (t) => {
+    const position = column.position;
+    await column.destroy({ transaction: t });
+    // Las columnas que estaban a su derecha se mueven un puesto a la izquierda
+    await BoardColumn.decrement('position', {
+      by: 1,
+      where: { boardId: board.id, position: { [Op.gt]: position } },
+      transaction: t,
+    });
+  });
+
+  notifyBoardChanged(board.id);
+  res.redirect(`/boards/${board.id}/settings`);
+});
+
+// Elimina el tablero entero, con sus columnas, tarjetas, comentarios y miembros
+router.post('/:id/delete', async (req, res) => {
+  const board = await requireAdmin(req, res);
+  if (!board) return;
+
+  const columns = await BoardColumn.findAll({ where: { boardId: board.id } });
+  const columnIds = columns.map((c) => c.id);
+  const cards = await Card.findAll({ where: { columnId: columnIds } });
+  const cardIds = cards.map((c) => c.id);
+
+  await sequelize.transaction(async (t) => {
+    await Comment.destroy({ where: { cardId: cardIds }, transaction: t });
+    await Card.destroy({ where: { id: cardIds }, transaction: t });
+    await BoardColumn.destroy({ where: { boardId: board.id }, transaction: t });
+    await Membership.destroy({ where: { boardId: board.id }, transaction: t });
+    await board.destroy({ transaction: t });
+  });
+
+  notifyBoardChanged(board.id);
+  res.redirect('/boards');
 });
 
 module.exports = router;
