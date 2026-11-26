@@ -1,7 +1,6 @@
 const express = require('express');
 const { Op } = require('sequelize');
-const { sequelize, Board, Membership, BoardColumn, Card } = require('../database');
-
+const { sequelize, Board, Membership, BoardColumn, Card, Comment, User } = require('../database');
 const router = express.Router();
 
 const DEFAULT_COLUMNS = ['Pendiente', 'En Proceso', 'Terminado'];
@@ -233,11 +232,18 @@ router.get('/:id/cards/:cardId', async (req, res) => {
   if (!card) {
     return res.status(404).send('Tarjeta no encontrada');
   }
+ 
+    const comments = await Comment.findAll({
+    where: { cardId: card.id },
+    include: { model: User, attributes: ['id', 'name'] },
+    order: [['createdAt', 'ASC']],
+  });
 
   res.render('card-detail', {
     title: card.title,
     board,
     card,
+    comments,
     role: membership.role,
     error: null,
     values: {
@@ -332,6 +338,30 @@ router.post('/:id/cards/:cardId/delete', async (req, res) => {
   });
 
   res.redirect(`/boards/${board.id}`);
+});
+
+// Añade un comentario a una tarjeta (RF7). Solo colaborador o admin
+router.post('/:id/cards/:cardId/comments', async (req, res) => {
+  const membership = await findMembership(req);
+  if (!membership) {
+    return res.status(404).send('Tablero no encontrado');
+  }
+  if (membership.role === 'guest') {
+    return res.status(403).send('Los invitados no pueden comentar');
+  }
+
+  const board = await findBoardWithColumns(req.params.id);
+  const card = await findCardInBoard(board, req.params.cardId);
+  if (!card) {
+    return res.status(404).send('Tarjeta no encontrada');
+  }
+
+  const text = (req.body.text || '').trim();
+  if (text) {
+    await Comment.create({ text, cardId: card.id, userId: req.session.user.id });
+  }
+
+  res.redirect(`/boards/${board.id}/cards/${card.id}#comentarios`);
 });
 
 module.exports = router;

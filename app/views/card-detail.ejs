@@ -76,9 +76,45 @@
                 <% } %>
             </div>
 
-            <aside class="comments-card">
+            
+            <aside class="comments-card" id="comentarios">
                 <h3>Comentarios</h3>
-                <p>Los comentarios llegarán con el RF7.</p>
+
+                <div class="comments-list">
+                    <% const commentList = locals.comments || []; %>
+                    <% if (commentList.length === 0) { %>
+                        <p>Todavía no hay comentarios.</p>
+                    <% } %>
+
+                    <% commentList.forEach((comment) => { %>
+                        <div class="comment-item">
+                            <div class="comment-avatar" style="background-color: var(--brand-blue);">
+                                <%= comment.User.name.charAt(0).toUpperCase() %>
+                            </div>
+                            <div class="comment-content">
+                                <div class="comment-meta">
+                                    <span class="comment-author"><%= comment.User.name %></span>
+                                    <span class="comment-time">
+                                        <%= comment.createdAt.toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }) %>
+                                    </span>
+                                </div>
+                                <div class="comment-bubble">
+                                    <p><%= comment.text %></p>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+
+                <% if (canEdit) { %>
+                    <form class="new-comment-form" method="post"
+                          action="/boards/<%= board.id %>/cards/<%= card.id %>/comments">
+                        <textarea name="text" placeholder="Escribe un comentario..." required></textarea>
+                        <div class="new-comment-actions">
+                            <button type="submit" class="btn btn-primary btn-sm">Comentar</button>
+                        </div>
+                    </form>
+                <% } %>
             </aside>
 
         </div>
