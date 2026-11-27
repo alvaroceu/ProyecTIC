@@ -65,7 +65,7 @@
                         <% if (m.role === 'admin') { %>
                             <span><%= ROLE_NAMES.admin %></span>
                         <% } else { %>
-                            <form method="post" action="/boards/<%= board.id %>/members/<%= m.id %>">
+                            <form method="post" action="/boards/<%= board.id %>/members/<%= m.userId %>">
                                 <select name="role" class="form-select select-sm" onchange="this.form.submit()">
                                     <option value="collaborator" <%= m.role === 'collaborator' ? 'selected' : '' %>>Colaborador</option>
                                     <option value="guest" <%= m.role === 'guest' ? 'selected' : '' %>>Invitado</option>
@@ -76,7 +76,7 @@
 
                     <div class="member-action-col">
                         <% if (m.role !== 'admin') { %>
-                            <form method="post" action="/boards/<%= board.id %>/members/<%= m.id %>/delete"
+                            <form method="post" action="/boards/<%= board.id %>/members/<%= m.userId %>/delete"
                                   onsubmit="return confirm(<%= JSON.stringify('¿Quitar a ' + m.User.name + ' del tablero?') %>);">
                                 <button type="submit" class="btn btn-outline btn-sm btn-danger-outline">Quitar</button>
                             </form>

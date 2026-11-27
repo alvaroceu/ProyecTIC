@@ -436,7 +436,7 @@ router.post('/:id/members/:memberId', async (req, res) => {
   const board = await requireAdmin(req, res);
   if (!board) return;
 
-  const member = await Membership.findOne({ where: { id: req.params.memberId, boardId: board.id } });
+  const member = await Membership.findOne({ where: { userId: req.params.memberId, boardId: board.id } });
   if (!member || member.role === 'admin' || !INVITE_ROLES.includes(req.body.role)) {
     return res.status(400).send('Cambio de rol no válido');
   }
@@ -451,7 +451,7 @@ router.post('/:id/members/:memberId/delete', async (req, res) => {
   const board = await requireAdmin(req, res);
   if (!board) return;
 
-  const member = await Membership.findOne({ where: { id: req.params.memberId, boardId: board.id } });
+  const member = await Membership.findOne({ where: { userId: req.params.memberId, boardId: board.id } });
   if (!member || member.role === 'admin') {
     return res.status(400).send('No se puede quitar a este miembro');
   }
