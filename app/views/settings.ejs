@@ -61,7 +61,7 @@
                         </form>
 
                         <form method="post" action="/boards/<%= board.id %>/columns/<%= column.id %>/delete"
-                              onsubmit="return confirm('¿Eliminar la columna <%= column.name %>?');">
+                              onsubmit="return confirm(<%= JSON.stringify('¿Eliminar la columna ' + column.name + '?') %>);">
                             <button type="submit" class="btn btn-outline btn-sm btn-danger-outline"
                                     <%= column.Cards.length > 0 || board.BoardColumns.length === 1 ? 'disabled' : '' %>>Eliminar</button>
                         </form>
@@ -99,7 +99,7 @@
             </div>
             <div class="danger-zone-action">
                 <form method="post" action="/boards/<%= board.id %>/delete"
-                      onsubmit="return confirm('¿Seguro que quieres eliminar el tablero <%= board.name %>? No se puede deshacer.');">
+                      onsubmit="return confirm(<%= JSON.stringify('¿Seguro que quieres eliminar el tablero ' + board.name + '? No se puede deshacer.') %>);">
                     <button type="submit" class="btn btn-danger-solid">Eliminar tablero</button>
                 </form>
             </div>

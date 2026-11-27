@@ -77,7 +77,7 @@
                     <div class="member-action-col">
                         <% if (m.role !== 'admin') { %>
                             <form method="post" action="/boards/<%= board.id %>/members/<%= m.id %>/delete"
-                                  onsubmit="return confirm('¿Quitar a <%= m.User.name %> del tablero?');">
+                                  onsubmit="return confirm(<%= JSON.stringify('¿Quitar a ' + m.User.name + ' del tablero?') %>);">
                                 <button type="submit" class="btn btn-outline btn-sm btn-danger-outline">Quitar</button>
                             </form>
                         <% } %>
