@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+    <main>
+        <section class="hero about-hero">
+            <div class="hero-content">
+                <h1>Sobre nosotros</h1>
+                <p class="hero-description">
+                    Nacimos con la idea de simplificar la forma en que los equipos pequeños se organizan.
+                    Creemos que las herramientas de trabajo deben ser intuitivas, rápidas y adaptarse a ti, no al revés.
+                </p>
+
+                <h2 class="section-title">Nuestra misión</h2>
+                <p class="hero-description">
+                    Facilitar la gestión ágil de proyectos eliminando la fricción y las configuraciones complejas.
+                    Queremos que te enfoques en lo que realmente importa: crear, colaborar y alcanzar tus metas.
+                </p>
+            </div>
+            <div class="hero-image">
+                <div class="image-placeholder">
+                    <span>✨ Imagen de equipo / proyecto ✨</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <h2 class="section-title">Nuestro equipo</h2>
+            <div class="team-grid">
+                <% team.forEach((name) => { %>
+                    <div class="team-card">
+                        <div class="team-avatar"></div>
+                        <h4 class="team-name"><%= name %></h4>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+    </main>
+
+<%- include('partials/footer') %>

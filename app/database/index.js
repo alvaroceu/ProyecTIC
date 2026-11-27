@@ -5,6 +5,7 @@ const Membership = require('./models/Membership');
 const BoardColumn = require('./models/BoardColumn');
 const Card = require('./models/Card');
 const Comment = require('./models/Comment');
+const ContactMessage = require('./models/ContactMessage');
 
 User.belongsToMany(Board, { through: Membership, foreignKey: 'userId', otherKey: 'boardId', onDelete: 'RESTRICT' });
 Board.belongsToMany(User, { through: Membership, foreignKey: 'boardId', otherKey: 'userId', onDelete: 'CASCADE' });
@@ -26,4 +27,4 @@ Comment.belongsTo(Card, { foreignKey: { name: 'cardId', allowNull: false }, onDe
 User.hasMany(Comment, { foreignKey: { name: 'userId', allowNull: false }, onDelete: 'RESTRICT' });
 Comment.belongsTo(User, { foreignKey: { name: 'userId', allowNull: false }, onDelete: 'RESTRICT' });
 
-module.exports = { sequelize, User, Board, Membership, BoardColumn, Card, Comment };
+module.exports = { sequelize, User, Board, Membership, BoardColumn, Card, Comment, ContactMessage };
