@@ -1,0 +1,124 @@
+<%- include('partials/header') %>
+
+    <% const canEdit = role !== 'guest'; %>
+
+    <main class="card-detail-main">
+
+        <div class="card-detail-header">
+            <div class="breadcrumbs">
+                <a href="/boards">Mis tableros</a> <span class="separator">›</span>
+                <a href="/boards/<%= board.id %>"><%= board.name %></a> <span class="separator">›</span>
+                <span>Tarjeta</span>
+            </div>
+            <div class="back-action">
+                <a href="/boards/<%= board.id %>" class="btn btn-outline btn-sm">← Volver al tablero</a>
+            </div>
+        </div>
+
+        <div class="card-detail-grid">
+
+            <div class="form-card">
+                <% if (error) { %>
+                    <p class="form-error"><%= error %></p>
+                <% } %>
+
+                <form action="/boards/<%= board.id %>/cards/<%= card.id %>" method="post">
+
+                    <div class="form-group">
+                        <label for="card-title">Título</label>
+                        <input type="text" id="card-title" name="title"
+                               value="<%= values.title || '' %>" required <%= canEdit ? '' : 'disabled' %>>
+                    </div>
+
+                    <div class="form-row-custom">
+                        <div class="form-group">
+                            <label for="card-column">Columna</label>
+                            <select id="card-column" name="columnId" class="form-select" <%= canEdit ? '' : 'disabled' %>>
+                                <% board.BoardColumns.forEach((column) => { %>
+                                    <option value="<%= column.id %>"
+                                        <%= String(column.id) === String(values.columnId) ? 'selected' : '' %>>
+                                        <%= column.name %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-date">Fecha límite (opcional)</label>
+                            <input type="date" id="card-date" name="dueDate"
+                                   value="<%= values.dueDate || '' %>" <%= canEdit ? '' : 'disabled' %>>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-desc">Descripción</label>
+                        <textarea id="card-desc" name="description" style="min-height: 180px;"
+                                  <%= canEdit ? '' : 'disabled' %>><%= values.description || '' %></textarea>
+                    </div>
+
+                    <% if (canEdit) { %>
+                        <div class="card-form-actions">
+                            <div class="actions-left">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <a href="/boards/<%= board.id %>" class="btn btn-outline">Cancelar</a>
+                            </div>
+                            <div class="actions-right">
+                                <button type="submit" form="delete-card-form" class="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
+                    <% } %>
+                </form>
+
+                <% if (canEdit) { %>
+                    <form id="delete-card-form" method="post"
+                          action="/boards/<%= board.id %>/cards/<%= card.id %>/delete"
+                          onsubmit="return confirm('¿Seguro que quieres eliminar esta tarjeta?');">
+                    </form>
+                <% } %>
+            </div>
+
+            
+            <aside class="comments-card" id="comentarios">
+                <h3>Comentarios</h3>
+
+                <div class="comments-list">
+                    <% const commentList = locals.comments || []; %>
+                    <% if (commentList.length === 0) { %>
+                        <p>Todavía no hay comentarios.</p>
+                    <% } %>
+
+                    <% commentList.forEach((comment) => { %>
+                        <div class="comment-item">
+                            <div class="comment-avatar" style="background-color: var(--brand-blue);">
+                                <%= comment.User.name.charAt(0).toUpperCase() %>
+                            </div>
+                            <div class="comment-content">
+                                <div class="comment-meta">
+                                    <span class="comment-author"><%= comment.User.name %></span>
+                                    <span class="comment-time">
+                                        <%= comment.createdAt.toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }) %>
+                                    </span>
+                                </div>
+                                <div class="comment-bubble">
+                                    <p><%= comment.text %></p>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+
+                <% if (canEdit) { %>
+                    <form class="new-comment-form" method="post"
+                          action="/boards/<%= board.id %>/cards/<%= card.id %>/comments">
+                        <textarea name="text" placeholder="Escribe un comentario..." required></textarea>
+                        <div class="new-comment-actions">
+                            <button type="submit" class="btn btn-primary btn-sm">Comentar</button>
+                        </div>
+                    </form>
+                <% } %>
+            </aside>
+
+        </div>
+
+    </main>
+
+<%- include('partials/footer') %>

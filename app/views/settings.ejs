@@ -1,0 +1,110 @@
+<%- include('partials/header') %>
+
+    <main class="settings-main">
+
+        <div class="breadcrumbs">
+            <a href="/boards">Mis tableros</a> <span class="separator">›</span>
+            <a href="/boards/<%= board.id %>"><%= board.name %></a> <span class="separator">›</span>
+            <span>Ajustes</span>
+        </div>
+
+        <h1>Ajustes del tablero</h1>
+
+        <% if (error) { %>
+            <p class="form-error"><%= error %></p>
+        <% } %>
+
+        <!-- General -->
+        <div class="form-card" style="margin-bottom: 40px;">
+            <h3 class="section-title" style="margin-bottom: 25px; font-size: 1.4rem;">General</h3>
+            <form method="post" action="/boards/<%= board.id %>/settings">
+                <div class="form-group">
+                    <label for="board-name">Nombre</label>
+                    <input type="text" id="board-name" name="name" value="<%= board.name %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="board-desc">Descripción</label>
+                    <input type="text" id="board-desc" name="description" value="<%= board.description || '' %>">
+                </div>
+                <div class="form-actions-inline" style="justify-content: flex-end; margin-top: 25px;">
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Columnas -->
+        <div class="form-card columns-card" style="margin-bottom: 40px;">
+            <h3 class="section-title-sm">Columnas</h3>
+
+            <div class="column-list">
+                <% board.BoardColumns.forEach((column, i) => { %>
+                    <div class="column-item" style="display: flex; gap: 8px; align-items: center;">
+
+                        <form method="post" action="/boards/<%= board.id %>/columns/<%= column.id %>"
+                              style="display: flex; gap: 8px; flex: 1;">
+                            <input type="text" name="name" value="<%= column.name %>" required style="flex: 1;">
+                            <button type="submit" class="btn btn-outline btn-sm">Renombrar</button>
+                        </form>
+
+                        <span style="white-space: nowrap;"><%= column.Cards.length %> tarjetas</span>
+
+                        <form method="post" action="/boards/<%= board.id %>/columns/<%= column.id %>/move">
+                            <input type="hidden" name="direction" value="up">
+                            <button type="submit" class="btn btn-outline btn-sm" title="Subir"
+                                    <%= i === 0 ? 'disabled' : '' %>>↑</button>
+                        </form>
+
+                        <form method="post" action="/boards/<%= board.id %>/columns/<%= column.id %>/move">
+                            <input type="hidden" name="direction" value="down">
+                            <button type="submit" class="btn btn-outline btn-sm" title="Bajar"
+                                    <%= i === board.BoardColumns.length - 1 ? 'disabled' : '' %>>↓</button>
+                        </form>
+
+                        <form method="post" action="/boards/<%= board.id %>/columns/<%= column.id %>/delete"
+                              onsubmit="return confirm(<%= JSON.stringify('¿Eliminar la columna ' + column.name + '?') %>);">
+                            <button type="submit" class="btn btn-outline btn-sm btn-danger-outline"
+                                    <%= column.Cards.length > 0 || board.BoardColumns.length === 1 ? 'disabled' : '' %>>Eliminar</button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
+
+            <form method="post" action="/boards/<%= board.id %>/columns"
+                  style="display: flex; gap: 8px; margin-top: 25px;">
+                <input type="text" name="name" placeholder="Nombre de la nueva columna" required style="flex: 1;">
+                <button type="submit" class="btn btn-primary">+ Añadir columna</button>
+            </form>
+        </div>
+
+        <!-- Miembros -->
+        <div class="management-grid" style="margin-bottom: 40px;">
+            <div class="management-card">
+                <div class="management-card-content">
+                    <div class="management-text">
+                        <h3>Miembros e invitaciones</h3>
+                        <p>Gestiona quién tiene acceso a este tablero y con qué rol.</p>
+                    </div>
+                </div>
+                <div class="management-card-footer">
+                    <a href="/boards/<%= board.id %>/members" class="btn btn-outline">Gestionar &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zona de peligro -->
+        <div class="danger-zone-card">
+            <div class="danger-zone-content">
+                <h3>Zona de peligro</h3>
+                <p>Si eliminas el tablero se borrarán para siempre sus columnas, tarjetas, comentarios y miembros.</p>
+            </div>
+            <div class="danger-zone-action">
+                <form method="post" action="/boards/<%= board.id %>/delete"
+                      onsubmit="return confirm(<%= JSON.stringify('¿Seguro que quieres eliminar el tablero ' + board.name + '? No se puede deshacer.') %>);">
+                    <button type="submit" class="btn btn-danger-solid">Eliminar tablero</button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+<%- include('partials/footer') %>
